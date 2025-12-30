@@ -6,7 +6,8 @@ function Produk() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const ambilData = async () => {
     try {
@@ -26,6 +27,53 @@ function Produk() {
     }
   };
 
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const token = localStorage.getItem("token");
+
+    try {
+      await axios.put(
+        `http://127.0.0.1:8000/api/products/${selectedProduct.id}`,
+        selectedProduct,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert("Produk berhasil diperbarui!");
+      setIsModalOpen(false);
+      // Panggil kembali fungsi fetch produk Anda di sini agar data di layar terupdate
+      ambilData();
+    } catch (error) {
+      console.error(error);
+      alert("Gagal memperbarui produk");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Tambahkan fungsi hapus di React
+  const handleHapus = async () => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(
+          `http://127.0.0.1:8000/api/products/${selectedProduct.id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        alert("Produk dihapus!");
+        setIsModalOpen(false);
+        ambilData(); // Refresh data
+      } catch (error) {
+        alert("Gagal menghapus produk");
+      }
+    }
+  };
+
+  // Letakkan tombol ini di dalam Modal (sebelah tombol simpan atau di atasnya)
+
   useEffect(() => {
     ambilData();
   }, []);
@@ -41,13 +89,13 @@ function Produk() {
       <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b mb-6">
         <div className="max-w-7xl mx-auto p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <h1 className="text-2xl font-extrabold text-gray-800 tracking-tight">
-            Stok Warung <span className="text-blue-600">🏪</span>
+            Stok Warung <span className="text-blue-600"></span>
           </h1>
           <Link
             to="/tambah-produk"
             className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-95 flex justify-center items-center"
           >
-            <span className="mr-2 text-xl">+</span> Tambah Barang
+            <span className="mr-2 text-xl">+</span> Tambah Produk
           </Link>
         </div>
       </div>
@@ -55,12 +103,10 @@ function Produk() {
       <div className="max-w-7xl mx-auto px-4">
         {/* INPUT PENCARIAN DENGAN ICON */}
         <div className="relative mb-8">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-            🔍
-          </span>
+          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"></span>
           <input
             type="text"
-            placeholder="Cari nama barang di gudang..."
+            placeholder="Cari nama produk di gudang..."
             className="w-full pl-10 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -87,11 +133,13 @@ function Produk() {
                       {item.nama_barang}
                     </h3>
                   </div>
-                  <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase shadow-sm ${
-                    item.stok < 5 
-                      ? "bg-red-50 text-red-600 border border-red-100 animate-pulse" 
-                      : "bg-green-50 text-green-600 border border-green-100"
-                  }`}>
+                  <div
+                    className={`px-3 py-1 rounded-full text-[10px] font-black uppercase shadow-sm ${
+                      item.stok < 5
+                        ? "bg-red-50 text-red-600 border border-red-100 animate-pulse"
+                        : "bg-green-50 text-green-600 border border-green-100"
+                    }`}
+                  >
                     Stok: {item.stok}
                   </div>
                 </div>
@@ -100,13 +148,23 @@ function Produk() {
                   <div>
                     <p className="text-xs text-gray-400">Harga Jual</p>
                     <p className="text-xl font-black text-gray-900">
-                      Rp {parseInt(item.harga_jual).toLocaleString('id-ID')}
+                      Rp {parseInt(item.harga_jual).toLocaleString("id-ID")}
                     </p>
                   </div>
-                  <button className="bg-gray-900 group-hover:bg-blue-600 text-white p-2.5 rounded-xl transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                  <button
+                    onClick={() => {
+                      setSelectedProduct(item);
+                      setIsModalOpen(true);
+                    }}
+                    className="bg-gray-900 group-hover:bg-blue-600 text-white p-2.5 rounded-xl transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                     </svg>
                   </button>
                 </div>
@@ -118,12 +176,116 @@ function Produk() {
         {/* EMPTY STATE */}
         {!loading && produkDifilter.length === 0 && (
           <div className="bg-white rounded-3xl p-12 text-center shadow-sm border border-dashed border-gray-300">
-            <span className="text-6xl block mb-4">📦</span>
-            <h3 className="text-lg font-bold text-gray-800">Barang tidak ditemukan</h3>
-            <p className="text-gray-500">Coba gunakan kata kunci lain atau tambah produk baru.</p>
+            <span className="text-6xl block mb-4"></span>
+            <h3 className="text-lg font-bold text-gray-800">
+              Produk tidak ditemukan
+            </h3>
+            <p className="text-gray-500">
+              Coba gunakan kata kunci lain atau tambah produk baru.
+            </p>
           </div>
         )}
       </div>
+      {isModalOpen && selectedProduct && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl animate-in fade-in zoom-in duration-300">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-gray-800">Edit Produk</h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdate} className="space-y-4">
+              <div>
+                <label className="text-xs font-black uppercase text-gray-400 ml-1">
+                  Nama Barang
+                </label>
+                <input
+                  type="text"
+                  className="w-full p-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"
+                  value={selectedProduct.nama_barang}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      nama_barang: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-black uppercase text-gray-400 ml-1">
+                    Stok
+                  </label>
+                  <input
+                    type="number"
+                    className="w-full p-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"
+                    value={selectedProduct.stok}
+                    onChange={(e) =>
+                      setSelectedProduct({
+                        ...selectedProduct,
+                        stok: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-black uppercase text-gray-400 ml-1">
+                    Kategori
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full p-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"
+                    value={selectedProduct.kategori}
+                    onChange={(e) =>
+                      setSelectedProduct({
+                        ...selectedProduct,
+                        kategori: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-black uppercase text-gray-400 ml-1">
+                  Harga Jual (Rp)
+                </label>
+                <input
+                  type="number"
+                  className="w-full p-4 bg-blue-50 text-blue-700 border-none rounded-2xl font-black text-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                  value={selectedProduct.harga_jual}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      harga_jual: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <button
+                type="button"
+                onClick={handleHapus}
+                className="w-full mt-2 bg-red-600 text-white font-bold text-sm py-4 hover:bg-red-700 rounded transition-all"
+              >
+                HAPUS PRODUK INI
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 text-white py-4 rounded font-bold text-sm shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all "
+              >
+                {loading ? "MENYIMPAN..." : "SIMPAN PERUBAHAN"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

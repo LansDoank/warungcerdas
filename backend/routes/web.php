@@ -15,4 +15,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/api/transactions/dashboard', [TransactionController::class, 'dashboard']);
     Route::get('/api/products', [ProductController::class, 'index']);
     Route::post('/api/products/store', [ProductController::class, 'store']); // Tambahkan ini
+    Route::put('/api/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/api/products/{id}', [ProductController::class, 'destroy']);
 });

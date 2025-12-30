@@ -16,38 +16,47 @@ const Dashboard = () => {
       const token = localStorage.getItem("token");
 
       // 2. Kirim request dengan Header Authorization
-      const response = await axios.get("http://127.0.0.1:8000/api/transactions/dashboard", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/transactions/dashboard",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
 
       setData(response.data.data);
+      console.log(response.data.data);
       setLoading(false);
     } catch (error) {
       console.error("Gagal mengambil data dashboard", error);
-      
+
       // Jika error 401 (Unauthenticated), arahkan ke login
       if (error.response?.status === 401) {
         window.location.href = "/login";
       }
-      
+
       setLoading(false);
     }
   };
 
-  if (loading) return <div className="p-6 text-center">Memuat Dashboard...</div>;
+  if (loading)
+    return <div className="p-6 text-center">Memuat Dashboard...</div>;
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Ringkasan Bisnis</h1>
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">
+        Ringkasan Bisnis
+      </h1>
 
       {/* BARIS 1: WIDGETS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {/* Kotak Pendapatan */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-green-500">
-          <p className="text-sm text-gray-500 font-semibold uppercase">Pendapatan Hari Ini</p>
+          <p className="text-sm text-gray-500 font-semibold uppercase">
+            Pendapatan Hari Ini
+          </p>
           <h2 className="text-2xl font-bold text-gray-800">
             Rp {parseInt(data?.pendapatan_hari_ini || 0).toLocaleString()}
           </h2>
@@ -55,33 +64,30 @@ const Dashboard = () => {
 
         {/* Kotak Transaksi */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-blue-500">
-          <p className="text-sm text-gray-500 font-semibold uppercase">Total Transaksi</p>
-          <h2 className="text-2xl font-bold text-gray-800">{data?.total_transaksi} Transaksi</h2>
+          <p className="text-sm text-gray-500 font-semibold uppercase">
+            Total Transaksi
+          </p>
+          <h2 className="text-2xl font-bold text-gray-800">
+            {data?.total_transaksi} Transaksi
+          </h2>
         </div>
 
         {/* Kotak Stok Kritis */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-red-500">
-          <p className="text-sm text-gray-500 font-semibold uppercase">Stok Menipis</p>
-          <h2 className="text-2xl font-bold text-gray-800">{data?.stok_kritis?.length} Produk</h2>
+          <p className="text-sm text-gray-500 font-semibold uppercase">
+            Stok Menipis
+          </p>
+          <h2 className="text-2xl font-bold text-gray-800">
+            {data?.stok_kritis?.length} Produk
+          </h2>
         </div>
-
-        {/* Tombol Cepat ke Kasir */}
-        <Link to="/kasir" className="bg-blue-600 p-6 rounded-2xl shadow-lg flex items-center justify-center text-white hover:bg-blue-700 transition">
-          <span className="text-xl font-bold">BUKA KASIR ➔</span>
-        </Link>
-        <Link to="/scan" className="bg-blue-600 p-6 rounded-2xl shadow-lg flex items-center justify-center text-white hover:bg-blue-700 transition">
-          <span className="text-xl font-bold">SCAN STRUK ➔</span>
-        </Link>
-        <Link to="/produk" className="bg-blue-600 p-6 rounded-2xl shadow-lg flex items-center justify-center text-white hover:bg-blue-700 transition">
-          <span className="text-xl font-bold">STOK PRODUK ➔</span>
-        </Link>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* TABEL STOK KRITIS */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border">
+        <div className="bg-red-100 p-6 rounded-2xl shadow-sm border border-red-500">
           <h3 className="text-lg font-bold mb-4 text-red-600 flex items-center">
-            ⚠️ Stok Perlu Ditambah (Restock)
+            Stok Perlu Ditambah (Restock)
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
@@ -95,11 +101,17 @@ const Dashboard = () => {
                 {data?.stok_kritis?.map((item) => (
                   <tr key={item.id} className="border-b last:border-0">
                     <td className="py-3 font-medium">{item.nama_barang}</td>
-                    <td className="py-3 text-right text-red-600 font-bold">{item.stok}</td>
+                    <td className="py-3 text-right text-red-600 font-bold">
+                      {item.stok}
+                    </td>
                   </tr>
                 ))}
                 {data?.stok_kritis?.length === 0 && (
-                  <tr><td colSpan="2" className="text-center py-4 text-gray-400">Semua stok aman ✅</td></tr>
+                  <tr>
+                    <td colSpan="2" className="text-center py-4 text-gray-400">
+                      Semua stok aman ✅
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -107,14 +119,20 @@ const Dashboard = () => {
         </div>
 
         {/* PRODUK TERLARIS */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border">
+        <div className="bg-blue-100 p-6 rounded-2xl shadow-sm border border-blue-500">
           <h3 className="text-lg font-bold mb-4 text-blue-600 flex items-center">
-            🏆 Produk Terlaris (Minggu Ini)
+            Produk Terlaris (Minggu Ini)
           </h3>
           <div className="space-y-4">
             {data?.terlaris?.map((item, index) => (
-              <div key={index} className="flex justify-between items-center bg-gray-50 p-3 rounded-xl">
-                <span className="font-semibold text-gray-700">{item.product?.nama_barang}</span>
+              <div
+                key={index}
+                className="flex border justify-between items-center bg-gray-50 p-3 rounded"
+              >
+                <span className="font-semibold text-gray-700">
+                  {/* UBAH BARIS INI: Panggil langsung item.nama_barang */}
+                  {item.nama_barang}
+                </span>
                 <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">
                   {item.total_terjual} Terjual
                 </span>

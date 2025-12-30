@@ -31,16 +31,34 @@ class ProductController extends Controller
             return response()->json(['message' => 'Token tidak valid atau expired'], 401);
         }
 
-        $product = Product::create([
-            'user_id' => auth('sanctum')->id(),
-            'nama_barang' => $request->nama_barang,
-            'harga_beli' => $request->harga_beli ?? 0, // Solusi error 1364 tadi
-            'harga_jual' => $request->harga_jual,
-            'stok' => $request->stok,
-            'kategori' => $request->kategori,
-        ]);
+        $userId = auth('sanctum')->id();
 
-        return response()->json(['success' => true, 'data' => $product]);
+        // Gunakan updateOrCreate
+        $product = Product::updateOrCreate(
+            [
+                // Kriteria pencarian: 
+                // Cari produk yang user_id DAN nama_barang-nya sama
+                'user_id' => $userId,
+                'nama_barang' => $request->nama_barang,
+            ],
+            [
+                // Data yang akan diisi/diperbarui:
+                'harga_beli' => $request->harga_beli ?? 0,
+                'harga_jual' => $request->harga_jual,
+                'kategori' => $request->kategori,
+
+                // LOGIKA STOK:
+                // Jika produk baru, stok = input.
+                // Jika produk lama, stok lama + input baru.
+                'stok' => \DB::raw("stok + " . ($request->stok ?? 0)),
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Produk berhasil diperbarui/ditambah',
+            'data' => $product
+        ]);
     }
 
     // 3. Update stok atau harga barang

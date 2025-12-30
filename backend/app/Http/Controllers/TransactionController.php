@@ -125,15 +125,24 @@ class TransactionController extends Controller
             ->get();
 
         // 4. Produk Terlaris (Hanya item dari transaksi milik user ini)
-        $produkTerlaris = TransactionDetail::whereHas('transaction', function ($query) use ($userId) {
-            $query->where('user_id', $userId);
-        })
-            ->with('product')
-            ->select('product_id', DB::raw('SUM(qty) as total_terjual'))
-            ->groupBy('product_id')
-            ->orderBy('total_terjual', 'desc')
-            ->take(5)
-            ->get();
+        // GANTI QUERY NOMOR 4 DENGAN INI UNTUK TEST:
+$produkTerlaris = DB::table('transaction_details')
+    ->join('products', 'transaction_details.product_id', '=', 'products.id')
+    ->select(
+        'products.nama_barang', 
+        'transaction_details.product_id', 
+        DB::raw('SUM(transaction_details.qty) as total_terjual')
+    )
+    ->whereExists(function ($query) use ($userId) {
+        $query->select(DB::raw(1))
+              ->from('transactions')
+              ->whereColumn('transactions.id', 'transaction_details.transaction_id')
+              ->where('transactions.user_id', $userId);
+    })
+    ->groupBy('transaction_details.product_id', 'products.nama_barang')
+    ->orderByDesc('total_terjual')
+    ->take(5)
+    ->get();
 
         return response()->json([
             'success' => true,

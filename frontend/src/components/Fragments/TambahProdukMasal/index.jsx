@@ -36,7 +36,7 @@ const TambahProdukMasal = () => {
           harga_beli: parseInt(item.harga),
           harga_jual: parseInt(item.harga) * 1.2, // Markup otomatis 20%
           stok: parseInt(item.qty),
-          kategori: "Hasil Scan",
+          kategori: "Produk",
         }, {
           headers: { Authorization: `Bearer ${token}` }
         })

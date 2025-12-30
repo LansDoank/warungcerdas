@@ -16,6 +16,37 @@ const ScanStruk = () => {
     }
   };
 
+   const kataTerlarang = [
+      "TOTAL",
+      "SUBTOTAL",
+      "TAX",
+      "CASHIER",
+      "KASIR",
+      "TERIMAKASIH",
+      "TELP",
+      "SURABAYA",
+      "ALAMAT",
+      "JL.",
+      "NO.",
+      "NPWP",
+      "CHECK",
+      "PAJAK",
+      "TUNAI",
+      "BAYAR",
+      "LINK",
+      "KEMBALI",
+      "CASH",
+      "HARGA",
+      "DATE",
+      "ITEMS",
+      "BEFORE",
+      "PBI",
+      'DISKON',
+      "PPN",
+      "NON PPN",
+      "ANDA"
+    ];
+
   // 2. Fungsi Ekstraksi (Mencari Nama & Harga dari teks berantakan)
   const ekstrakData = (teks) => {
     const baris = teks
@@ -43,7 +74,18 @@ const ScanStruk = () => {
       "BAYAR",
       "LINK",
       "KEMBALI",
-      "CASH"
+      "CASH",
+      "HARGA",
+      "DATE",
+      "ITEMS",
+      "BEFORE",
+      "PBI",
+      'DISKON',
+      "PPN",
+      "NON PPN",
+      "ANDA",
+      "01",
+      "02"
     ];
 
     let hasilRingkas = [];
@@ -151,7 +193,7 @@ const ScanStruk = () => {
   return (
     <div className="p-6 max-w-md mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 mt-10">
       <h2 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2">
-        <span>📸</span> Scan Struk Belanja
+        <span></span> Scan Struk Belanja
       </h2>
 
       {/* Input Kamera */}
@@ -197,9 +239,10 @@ const ScanStruk = () => {
 
       {hasilScan && (
         <div className="mt-6 p-4 bg-gray-50 rounded-2xl border">
-          <h3 className="font-black mb-3 text-sm">
+          <h3 className="font-black mb-2 text-sm">
             Pilih Barang yang Ingin Ditambah:
           </h3>
+          <h5 className="text-red-500 mb-2 text-sm">Data Produk Masih Bisa Diperbaiki Setelah Ditambahkan.</h5>
           <div className="space-y-2">
             {ekstrakData(hasilScan).map((item, index) => (
               <label

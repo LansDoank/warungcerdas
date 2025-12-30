@@ -126,7 +126,6 @@ const RiwayatTransaksi = () => {
                 }}>
                   <div style={{ textAlign: "center", marginBottom: "10px" }}>
                     <h2 style={{ margin: "0", fontSize: "18px" }}>WARUNG DIGITAL</h2>
-                    <p style={{ fontSize: "11px", margin: "0" }}>Jl. Raya IT No. 101, Indonesia</p>
                     <p style={{ margin: "5px 0" }}>================================</p>
                   </div>
 
@@ -134,7 +133,7 @@ const RiwayatTransaksi = () => {
                     <p style={{ margin: "0" }}>No  : {trx.invoice_number}</p>
                     <p style={{ margin: "0" }}>Tgl : {new Date(trx.created_at).toLocaleString("id-ID")}</p>
                     <p style={{ margin: "0" }}>Ksr : {user?.name || "Staff"}</p>
-                    <p style={{ margin: "5px 0" }}>--------------------------------</p>
+                    <p style={{ margin: "5px 0" }}>-------------------------------</p>
                   </div>
 
                   <div style={{ marginBottom: "10px" }}>
