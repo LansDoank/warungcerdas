@@ -34,7 +34,7 @@ const TambahProdukMasal = () => {
         axios.post("http://127.0.0.1:8000/api/products/store", {
           nama_barang: item.nama,
           harga_beli: parseInt(item.harga),
-          harga_jual: parseInt(item.harga) * 1.2, // Markup otomatis 20%
+          harga_jual: parseInt(item.harga), // Markup otomatis 20%
           stok: parseInt(item.qty),
           kategori: "Produk",
         }, {

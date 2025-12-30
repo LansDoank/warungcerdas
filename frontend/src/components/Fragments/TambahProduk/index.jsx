@@ -9,7 +9,7 @@ const TambahProduk = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nama_barang: dataDariScan?.nama || "", // Jika ada hasil scan, langsung isi
-    harga_beli: dataDariScan?.harga || 0,   // Jika ada hasil scan, langsung isi
+    harga_beli: dataDariScan?.harga || 0, // Jika ada hasil scan, langsung isi
     harga_jual: "",
     stok: "",
     kategori: "",
@@ -64,90 +64,28 @@ const TambahProduk = () => {
         </div>
 
         <form onSubmit={handleSimpan} className="space-y-5">
-      {/* Nama Barang */}
-      <div>
-        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">
-          Nama Barang
-        </label>
-        <input
-          type="text"
-          required
-          // TAMBAHKAN VALUE DI SINI:
-          value={formData.nama_barang} 
-          className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
-          placeholder="Misal: Indomie Goreng"
-          onChange={(e) =>
-            setFormData({ ...formData, nama_barang: e.target.value })
-          }
-        />
-      </div>
-
-      {/* Harga Awal / Beli (Modal) */}
-      <div>
-        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">
-          Harga Awal (Modal)
-        </label>
-        <div className="relative">
-          <span className="absolute left-4 top-4 text-gray-400 text-sm font-bold">Rp</span>
-          <input
-            type="number"
-            required
-            min="0"
-            // TAMBAHKAN VALUE DI SINI:
-            value={formData.harga_beli}
-            className="w-full p-4 pl-12 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-bold"
-            placeholder="0"
-            onChange={(e) =>
-              setFormData({ ...formData, harga_beli: e.target.value })
-            }
-          />
-        </div>
-      </div>
-
-      {/* Harga Jual */}
-      <div>
-        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">
-          Harga Jual
-        </label>
-        <div className="relative">
-          <span className="absolute left-4 top-4 text-gray-400 text-sm font-bold">Rp</span>
-          <input
-            type="number"
-            required
-            min="0"
-            // TAMBAHKAN VALUE DI SINI:
-            value={formData.harga_jual}
-            className="w-full p-4 pl-12 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-bold"
-            placeholder="0"
-            onChange={(e) =>
-              setFormData({ ...formData, harga_jual: e.target.value })
-            }
-          />
-        </div>
-      </div>
-
-      {/* Stok Awal */}
-      <div>
-        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">
-          Stok Awal
-        </label>
-        <input
-          type="number"
-          required
-          min="0"
-          // TAMBAHKAN VALUE DI SINI:
-          value={formData.stok}
-          className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-bold"
-          placeholder="0"
-          onChange={(e) =>
-            setFormData({ ...formData, stok: e.target.value })
-          }
-        />
-      </div>
-          {/* Harga Awal / Beli */}
+          {/* Nama Barang */}
           <div>
             <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">
-              Harga Awal (Modal)
+              Nama Barang
+            </label>
+            <input
+              type="text"
+              required
+              // TAMBAHKAN VALUE DI SINI:
+              value={formData.nama_barang}
+              className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
+              placeholder="Misal: Indomie Goreng"
+              onChange={(e) =>
+                setFormData({ ...formData, nama_barang: e.target.value })
+              }
+            />
+          </div>
+
+          {/* Harga Jual */}
+          <div>
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">
+              Harga Jual
             </label>
             <div className="relative">
               <span className="absolute left-4 top-4 text-gray-400 text-sm font-bold">
@@ -157,13 +95,34 @@ const TambahProduk = () => {
                 type="number"
                 required
                 min="0"
+                // TAMBAHKAN VALUE DI SINI:
+                value={formData.harga_jual}
                 className="w-full p-4 pl-12 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-bold"
                 placeholder="0"
                 onChange={(e) =>
-                  setFormData({ ...formData, harga_beli: e.target.value })
+                  setFormData({ ...formData, harga_jual: e.target.value })
                 }
               />
             </div>
+          </div>
+
+          {/* Stok Awal */}
+          <div>
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">
+              Stok Awal
+            </label>
+            <input
+              type="number"
+              required
+              min="0"
+              // TAMBAHKAN VALUE DI SINI:
+              value={formData.stok}
+              className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-bold"
+              placeholder="0"
+              onChange={(e) =>
+                setFormData({ ...formData, stok: e.target.value })
+              }
+            />
           </div>
 
           {/* Kategori */}

@@ -13,7 +13,6 @@ return new class extends Migration {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('customer_id')->nullable()->constrained()->onDelete('set null');
             $table->string('invoice_number')->unique();
             $table->decimal('total_harga', 12, 2);
             $table->decimal('bayar', 12, 2);

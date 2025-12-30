@@ -47,18 +47,11 @@ class WarungSeeder extends Seeder
             ]));
         }
 
-        // 3. Buat Data Pelanggan
-        $customer = Customer::create([
-            'user_id' => $user->id,
-            'nama_pelanggan' => 'Pak RT Agus',
-            'nomor_wa' => '628123456789',
-            'alamat' => 'Blok A No. 12'
-        ]);
+        
 
         // 4. Buat Contoh Transaksi Lunas
         $trx = Transaction::create([
             'user_id' => $user->id,
-            'customer_id' => null,
             'invoice_number' => 'CW-LUNAS-001',
             'total_harga' => 7000,
             'bayar' => 10000,
@@ -79,7 +72,6 @@ class WarungSeeder extends Seeder
         // 5. Buat Contoh Transaksi Hutang
         $trxHutang = Transaction::create([
             'user_id' => $user->id,
-            'customer_id' => $customer->id,
             'invoice_number' => 'CW-HUTANG-001',
             'total_harga' => 75000,
             'bayar' => 0,
@@ -88,12 +80,6 @@ class WarungSeeder extends Seeder
             'tanggal_transaksi' => now()->subDays(2), // 2 hari yang lalu
         ]);
 
-        Debt::create([
-            'transaction_id' => $trxHutang->id,
-            'customer_id' => $customer->id,
-            'sisa_hutang' => 75000,
-            'jatuh_tempo' => now()->addDays(7), // Jatuh tempo 7 hari kedepan
-            'status' => 'Belum Lunas'
-        ]);
+        
     }
 }
