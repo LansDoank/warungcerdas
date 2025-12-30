@@ -8,6 +8,9 @@ use App\Http\Controllers\ProductController;
 // Rute publik (tanpa login)
 Route::post('/api/login', [AuthController::class, 'login']);
 
+// routes/api.php
+Route::post('/api/register', [AuthController::class, 'register']);
+
 // Rute yang butuh login (Multi-User)
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/api/transactions', [TransactionController::class, 'index']);

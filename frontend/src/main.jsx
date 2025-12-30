@@ -11,11 +11,16 @@ import TambahProduk from "./components/Fragments/TambahProduk/index.jsx";
 import TambahProdukMasal from "./components/Fragments/TambahProdukMasal/index.jsx";
 import Dashboard from "./components/pages/Dashboard.jsx";
 import Produk from "./components/pages/Produk.jsx";
+import RegisterPage from "./components/pages/Register.jsx";
 
 const route = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "/",

@@ -30,14 +30,16 @@ class AuthController extends Controller
     public function register(Request $request) {
     $request->validate([
         'name' => 'required|string|max:255',
+        'nama_warung' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8|confirmed', // 'confirmed' butuh field password_confirmation
+        'password' => 'required|string|min:1|confirmed',
     ]);
 
-    $user = \App\Models\User::create([
+    $user = User::create([
         'name' => $request->name,
+        'nama_warung' => $request->nama_warung,
         'email' => $request->email,
-        'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+        'password' => Hash::make($request->password),
     ]);
 
     // Langsung buatkan token agar user langsung login

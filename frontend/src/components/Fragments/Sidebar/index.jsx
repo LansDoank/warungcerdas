@@ -24,7 +24,7 @@ const Sidebar = () => {
       {/* Logo */}
       <div className="hidden sm:block mb-10 text-center">
         <h1 className="text-2xl font-black text-blue-600 tracking-tighter italic">
-          {user.nama_warung}
+          {user.nama_warung ? user.nama_warung : "WarungCerdas"}
         </h1>
       </div>
 
