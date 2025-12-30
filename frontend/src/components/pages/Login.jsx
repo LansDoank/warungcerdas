@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 const LoginPage = () => {
@@ -18,7 +18,7 @@ const LoginPage = () => {
       localStorage.setItem('user', JSON.stringify(response.data.user));
 
       alert("Selamat Datang, " + response.data.user.nama_warung);
-      window.location.href = "/dashboard"; // Pindah ke dashboard
+      window.location.href = "/dashboard"; 
     } catch (error) {
       alert("Login Gagal: " + error.response.data.message);
     }

@@ -20,11 +20,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        // Atau jika ada baris seperti ini, tambahkan 'nama_warung':
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'nama_warung' => 'Warung Contoh', // <--- Tambahkan ini
+            'nama_warung' => 'Warung Contoh', 
         ]);
     }
 }

@@ -18,7 +18,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Login Gagal'], 401);
         }
 
-        // WAJIB: Buat token menggunakan plainTextToken
+        // Buat token 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -26,6 +26,30 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+
+    public function register(Request $request) {
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8|confirmed', // 'confirmed' butuh field password_confirmation
+    ]);
+
+    $user = \App\Models\User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+    ]);
+
+    // Langsung buatkan token agar user langsung login
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Registrasi Berhasil!',
+        'token' => $token,
+        'user' => $user
+    ], 201);
+}
 
     public function logout(Request $request)
     {

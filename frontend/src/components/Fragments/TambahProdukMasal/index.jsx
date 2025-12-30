@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const TambahProdukMasal = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  // State utama untuk menampung array barang
   const [items, setItems] = useState(location.state?.items || []);
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +15,7 @@ const TambahProdukMasal = () => {
     setItems(newItems);
   };
 
-  // 2. Fungsi untuk menghapus baris yang tidak diinginkan (data sampah)
+  // 2. Fungsi untuk menghapus
   const handleHapus = (index) => {
     const filteredItems = items.filter((_, i) => i !== index);
     setItems(filteredItems);

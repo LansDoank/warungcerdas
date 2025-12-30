@@ -42,7 +42,6 @@ function Produk() {
       );
       alert("Produk berhasil diperbarui!");
       setIsModalOpen(false);
-      // Panggil kembali fungsi fetch produk Anda di sini agar data di layar terupdate
       ambilData();
     } catch (error) {
       console.error(error);
@@ -52,7 +51,6 @@ function Produk() {
     }
   };
 
-  // Tambahkan fungsi hapus di React
   const handleHapus = async () => {
     if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
       try {
@@ -65,27 +63,25 @@ function Produk() {
         );
         alert("Produk dihapus!");
         setIsModalOpen(false);
-        ambilData(); // Refresh data
+        ambilData(); 
       } catch (error) {
         alert("Gagal menghapus produk");
       }
     }
   };
 
-  // Letakkan tombol ini di dalam Modal (sebelah tombol simpan atau di atasnya)
 
   useEffect(() => {
     ambilData();
   }, []);
 
-  // Filter dipindahkan ke variabel agar lebih bersih
   const produkDifilter = products.filter((p) =>
     p.nama_barang.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="bg-gray-50 min-h-screen pb-10">
-      {/* HEADER STICKY: Agar navigasi tetap terlihat saat scroll */}
+      {/* HEADER STICKY*/}
       <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b mb-6">
         <div className="max-w-7xl mx-auto p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <h1 className="text-2xl font-extrabold text-gray-800 tracking-tight">
@@ -101,7 +97,7 @@ function Produk() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4">
-        {/* INPUT PENCARIAN DENGAN ICON */}
+        {/* INPUT PENCARIAN */}
         <div className="relative mb-8">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"></span>
           <input
@@ -117,7 +113,6 @@ function Produk() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
         ) : (
-          /* GRID: 1 kolom di HP, 2 di Tablet, 3 di Laptop, 4 di Layar Besar */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {produkDifilter.map((item) => (
               <div
@@ -173,7 +168,6 @@ function Produk() {
           </div>
         )}
 
-        {/* EMPTY STATE */}
         {!loading && produkDifilter.length === 0 && (
           <div className="bg-white rounded-3xl p-12 text-center shadow-sm border border-dashed border-gray-300">
             <span className="text-6xl block mb-4"></span>

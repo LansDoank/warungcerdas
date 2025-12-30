@@ -5,7 +5,7 @@ const HalamanKasir = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
-  const [nominalBayar, setNominalBayar] = useState(0); // State baru untuk uang pelanggan
+  const [nominalBayar, setNominalBayar] = useState(0); 
 
   // Ambil data user dari LocalStorage
   const user = JSON.parse(localStorage.getItem("user"));
@@ -14,13 +14,12 @@ const HalamanKasir = () => {
     // 1. Ambil token dari localStorage
     const token = localStorage.getItem("token");
 
-    // 2. Jika tidak ada token, arahkan ke login (Opsional tapi bagus untuk keamanan)
+    // 2. Jika tidak ada token, arahkan ke login 
     if (!token) {
       window.location.href = "/login";
       return;
     }
 
-    // 3. Tambahkan Header Authorization agar Laravel mengenali user
     axios
       .get("http://127.0.0.1:8000/api/products", {
         headers: {
@@ -29,7 +28,6 @@ const HalamanKasir = () => {
         },
       })
       .then((res) => {
-        // Laravel mengirim res.data.data karena format JSON kita sebelumnya
         setProducts(res.data.data);
       })
       .catch((err) => {
@@ -85,7 +83,7 @@ const HalamanKasir = () => {
     if (cart.length === 0) return alert("Keranjang masih kosong!");
     if (nominalBayar < totalHarga) return alert("Uang pembayaran kurang!");
 
-    // 1. Ambil token lagi di sini
+    // 1. Ambil token
     const token = localStorage.getItem("token");
 
     const payload = {
@@ -100,13 +98,13 @@ const HalamanKasir = () => {
     };
 
     try {
-      // 2. Tambahkan headers Authorization di bawah ini
+      // 2. Tambahkan headers Authorization 
       const response = await axios.post(
         "http://127.0.0.1:8000/api/transactions/store",
         payload,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // WAJIB ADA
+            Authorization: `Bearer ${token}`, 
             Accept: "application/json",
           },
         }
@@ -115,7 +113,6 @@ const HalamanKasir = () => {
       if (response.data.success) {
         alert("Transaksi Berhasil!");
 
-        // Logika update stok tampilan (sudah benar)
         const updatedProducts = products.map((product) => {
           const itemInCart = cart.find((item) => item.id === product.id);
           if (itemInCart) {
@@ -140,7 +137,6 @@ const HalamanKasir = () => {
     }
   };
 
-  // Fungsi mengubah angka jadi Rp 50.000
   const formatRupiah = (angka) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -149,14 +145,13 @@ const HalamanKasir = () => {
     }).format(angka);
   };
 
-  // Fungsi mengubah string Rp 50.000 kembali jadi angka 50000
   const parseAngka = (string) => {
     return parseInt(string.replace(/[^0-9]/g, "")) || 0;
   };
 
   return (
     <div className="flex flex-col md:flex-row p-4 gap-4 bg-gray-100 min-h-screen">
-      {/* BAGIAN KIRI: DAFTAR BARANG */}
+      {/*  DAFTAR BARANG */}
       <div className="md:w-2/3">
         <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
           <input
@@ -178,7 +173,7 @@ const HalamanKasir = () => {
                 onClick={() => tambahKeKeranjang(produk)}
                 className={`p-3 rounded-lg shadow cursor-pointer transition ${
                   produk.stok <= 0
-                    ? "bg-gray-200 opacity-60 cursor-not-allowed" // Tampilan jika stok habis
+                    ? "bg-gray-200 opacity-60 cursor-not-allowed" 
                     : "bg-white hover:bg-blue-50"
                 }`}
               >
@@ -207,7 +202,7 @@ const HalamanKasir = () => {
         </div>
       </div>
 
-      {/* BAGIAN KANAN: KERANJANG & TOTAL */}
+      {/* KERANJANG & TOTAL */}
       <div className="md:w-1/3">
         <div className="bg-white p-4 rounded-lg shadow-md sticky top-4">
           <h2 className="text-xl font-bold mb-4 border-b pb-2">Keranjang</h2>
@@ -221,7 +216,6 @@ const HalamanKasir = () => {
                 </p>
               </div>
             ) : (
-              /* JIKA KERANJANG ADA ISINYA */
               cart.map((item) => (
                 <div
                   key={item.id}
@@ -253,8 +247,6 @@ const HalamanKasir = () => {
               </span>
             </div>
 
-            {/* Ganti state nominalBayar di atas jika perlu: const [nominalBayar, setNominalBayar] = useState(""); */}
-
             <div className="mb-4">
               <label className="text-xs text-gray-500 font-semibold uppercase">
                 Uang Bayar
@@ -264,10 +256,10 @@ const HalamanKasir = () => {
                   type="text"
                   placeholder="Masukkan nominal bayar..."
                   className="w-full p-3 border-2 border-blue-100 rounded-xl font-bold text-lg text-blue-700 focus:border-blue-500 outline-none transition"
-                  value={nominalBayar ? formatRupiah(nominalBayar) : ""} // Menampilkan format rupiah
+                  value={nominalBayar ? formatRupiah(nominalBayar) : ""} 
                   onChange={(e) => {
                     const value = parseAngka(e.target.value);
-                    setNominalBayar(value === 0 ? "" : value); // Jika 0, set kosong agar placeholder muncul
+                    setNominalBayar(value === 0 ? "" : value); 
                   }}
                 />
               </div>

@@ -16,12 +16,12 @@ class TransactionController extends Controller
 
     public function index()
     {
-        // 1. Ambil ID user yang sedang login dari Token Sanctum
+        // 1. Ambil ID user yang sedang login
         $userId = auth('sanctum')->id();
 
-        // 2. Ambil transaksi yang HANYA dimiliki oleh user tersebut
+        // 2. Ambil transaksi yang HANYA dimiliki oleh user 
         $transactions = Transaction::with(['details.product'])
-            ->where('user_id', $userId) // Filter berdasarkan pemilik
+            ->where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -33,15 +33,13 @@ class TransactionController extends Controller
     }
     public function store(Request $request)
     {
-        // return response()->json($request);
 
         $request->validate([
             'total_harga' => 'required|numeric',
             'bayar' => 'required|numeric',
-            'items' => 'required|array', // Array barang yang dibeli
+            'items' => 'required|array',
         ]);
 
-        // Gunakan DB Transaction agar data aman
         DB::beginTransaction();
 
         try {
@@ -58,14 +56,12 @@ class TransactionController extends Controller
 
             // 2. Looping semua barang yang dibeli
             foreach ($request->items as $item) {
-                // Cari produknya
                 $product = Product::find($item['product_id']);
 
                 if (!$product) {
                     throw new \Exception("Produk tidak ditemukan");
                 }
 
-                // CEK STOK: Jika stok kurang dari yang dibeli
                 if ($product->stok < $item['qty']) {
                     throw new \Exception("Stok {$product->nama_barang} tidak cukup!");
                 }
@@ -83,7 +79,6 @@ class TransactionController extends Controller
                 ]);
             }
 
-            // Jika semua lancar, simpan permanen
             DB::commit();
 
             return response()->json([
@@ -93,7 +88,6 @@ class TransactionController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            // Jika ada error (misal stok habis), batalkan semua simpanan data
             DB::rollBack();
 
             return response()->json([
@@ -106,43 +100,42 @@ class TransactionController extends Controller
 
     public function dashboard()
     {
-        $userId = auth('sanctum')->id(); // Ambil ID user yang login
+        $userId = auth('sanctum')->id();
         $hariIni = date('Y-m-d');
 
-        // 1. Total Pendapatan Hari Ini (Hanya milik user ini)
+        // 1. Total Pendapatan Hari Ini
         $pendapatan = Transaction::where('user_id', $userId)
             ->whereDate('created_at', $hariIni)
             ->sum('total_harga');
 
-        // 2. Total Transaksi Hari Ini (Hanya milik user ini)
+        // 2. Total Transaksi Hari Ini
         $totalTransaksi = Transaction::where('user_id', $userId)
             ->whereDate('created_at', $hariIni)
             ->count();
 
-        // 3. Produk Stok Sedikit (Hanya milik user ini)
+        // 3. Produk Stok Sedikit 
         $stokKritis = Product::where('user_id', $userId)
             ->where('stok', '<', 5)
             ->get();
 
-        // 4. Produk Terlaris (Hanya item dari transaksi milik user ini)
-        // GANTI QUERY NOMOR 4 DENGAN INI UNTUK TEST:
-$produkTerlaris = DB::table('transaction_details')
-    ->join('products', 'transaction_details.product_id', '=', 'products.id')
-    ->select(
-        'products.nama_barang', 
-        'transaction_details.product_id', 
-        DB::raw('SUM(transaction_details.qty) as total_terjual')
-    )
-    ->whereExists(function ($query) use ($userId) {
-        $query->select(DB::raw(1))
-              ->from('transactions')
-              ->whereColumn('transactions.id', 'transaction_details.transaction_id')
-              ->where('transactions.user_id', $userId);
-    })
-    ->groupBy('transaction_details.product_id', 'products.nama_barang')
-    ->orderByDesc('total_terjual')
-    ->take(5)
-    ->get();
+        // 4. Produk Terlaris 
+        $produkTerlaris = DB::table('transaction_details')
+            ->join('products', 'transaction_details.product_id', '=', 'products.id')
+            ->select(
+                'products.nama_barang',
+                'transaction_details.product_id',
+                DB::raw('SUM(transaction_details.qty) as total_terjual')
+            )
+            ->whereExists(function ($query) use ($userId) {
+                $query->select(DB::raw(1))
+                    ->from('transactions')
+                    ->whereColumn('transactions.id', 'transaction_details.transaction_id')
+                    ->where('transactions.user_id', $userId);
+            })
+            ->groupBy('transaction_details.product_id', 'products.nama_barang')
+            ->orderByDesc('total_terjual')
+            ->take(5)
+            ->get();
 
         return response()->json([
             'success' => true,

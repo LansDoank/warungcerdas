@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const RiwayatTransaksi = () => {
-  // ... (state dan useEffect tetap sama) ...
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -41,7 +40,6 @@ const RiwayatTransaksi = () => {
     const printContent = document.getElementById(`struk-${trx.id}`).innerHTML;
     const originalContent = document.body.innerHTML;
 
-    // Tambahkan pembungkus class 'printing-mode' agar CSS print aktif
     document.body.innerHTML = `<div class="printing-mode">${printContent}</div>`;
     
     window.print();
@@ -50,7 +48,7 @@ const RiwayatTransaksi = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* CSS KHUSUS UNTUK MENGATUR UKURAN PRINT */}
+      {/* CSS UNTUK MENGATUR UKURAN PRINT */}
       <style>
         {`
           @media print {
@@ -82,7 +80,6 @@ const RiwayatTransaksi = () => {
         <div className="grid gap-4">
           {transactions.map((trx) => (
             <div key={trx.id} className="bg-white p-4 rounded-xl shadow-sm border">
-              {/* ... (Tampilan Card Riwayat Tetap Sama) ... */}
               <div className="flex justify-between items-center mb-2">
                 <div>
                   <p className="font-bold text-blue-600">{trx.invoice_number}</p>
@@ -115,13 +112,13 @@ const RiwayatTransaksi = () => {
                 </button>
               </div>
 
-              {/* AREA STRUK: Sudah disesuaikan agar pas di kertas 80mm */}
+              {/* AREA STRUK*/}
               <div id={`struk-${trx.id}`} className="hidden">
                 <div style={{
-                  width: "72mm", // Sisakan sedikit margin agar tidak terpotong printer
+                  width: "72mm", 
                   padding: "5px",
-                  fontFamily: "'Courier New', Courier, monospace", // Font khas struk
-                  fontSize: "14px", // Ukuran font diperbesar agar jelas
+                  fontFamily: "'Courier New', Courier, monospace", 
+                  fontSize: "14px", 
                   lineHeight: "1.2"
                 }}>
                   <div style={{ textAlign: "center", marginBottom: "10px" }}>

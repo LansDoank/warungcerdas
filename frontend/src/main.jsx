@@ -18,19 +18,18 @@ const route = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    // App menjadi parent/induk rute yang butuh Sidebar
     path: "/",
     element: (
         <App />
     ),
     children: [
       {
-        path: "dashboard", // Menjadi /dashboard
+        path: "dashboard", 
         element: <Dashboard />,
       },
       {
-        path: "produk", // Menjadi /produk
-        element: <Produk />, // Ganti dengan komponen daftar produk Anda
+        path: "produk", 
+        element: <Produk />, 
       },
       {
         path: "kasir",
@@ -44,7 +43,6 @@ const route = createBrowserRouter([
         path: "riwayat",
         element: <RiwayatTransaksi />,
       },
-      // Anda bisa menambah rute lain di sini
     ],
   },
   {

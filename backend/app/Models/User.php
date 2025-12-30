@@ -10,7 +10,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    // 2. Tambahkan HasApiTokens di sini
     use HasApiTokens, Notifiable,HasFactory; 
 
     protected $fillable = [
@@ -20,5 +19,4 @@ class User extends Authenticatable
         'nama_warung',
     ];
 
-    // ... sisa kode model
 }

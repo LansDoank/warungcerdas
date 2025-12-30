@@ -16,7 +16,7 @@ class WarungSeeder extends Seeder
 {
     public function run()
     {
-        // 1. Buat Akun Pemilik Warung (Untuk Login)
+        // 1. Buat Akun
         $user = User::create([
             'name' => 'Budi Pemilik Warung',
             'nama_warung' => 'Warung Barokah Jaya',
@@ -49,7 +49,7 @@ class WarungSeeder extends Seeder
 
         
 
-        // 4. Buat Contoh Transaksi Lunas
+        // 4. Buat Contoh Transaksi 
         $trx = Transaction::create([
             'user_id' => $user->id,
             'invoice_number' => 'CW-LUNAS-001',
@@ -60,7 +60,7 @@ class WarungSeeder extends Seeder
             'tanggal_transaksi' => now(),
         ]);
 
-        // Isi Detail Transaksi Lunas (Beli 2 Indomie)
+        // Isi Detail Transaksi 
         TransactionDetail::create([
             'transaction_id' => $trx->id,
             'product_id' => 1, // ID Indomie
@@ -69,16 +69,6 @@ class WarungSeeder extends Seeder
             'subtotal' => 7000
         ]);
 
-        // 5. Buat Contoh Transaksi Hutang
-        $trxHutang = Transaction::create([
-            'user_id' => $user->id,
-            'invoice_number' => 'CW-HUTANG-001',
-            'total_harga' => 75000,
-            'bayar' => 0,
-            'kembali' => 0,
-            'status_pembayaran' => 'Hutang',
-            'tanggal_transaksi' => now()->subDays(2), // 2 hari yang lalu
-        ]);
 
         
     }

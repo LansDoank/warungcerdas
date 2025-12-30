@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [data, setData] = useState(null);
@@ -15,7 +14,6 @@ const Dashboard = () => {
       // 1. Ambil token dari localStorage
       const token = localStorage.getItem("token");
 
-      // 2. Kirim request dengan Header Authorization
       const response = await axios.get(
         "http://127.0.0.1:8000/api/transactions/dashboard",
         {
@@ -32,7 +30,6 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Gagal mengambil data dashboard", error);
 
-      // Jika error 401 (Unauthenticated), arahkan ke login
       if (error.response?.status === 401) {
         window.location.href = "/login";
       }
@@ -50,7 +47,6 @@ const Dashboard = () => {
         Ringkasan Bisnis
       </h1>
 
-      {/* BARIS 1: WIDGETS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {/* Kotak Pendapatan */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-green-500">
@@ -130,7 +126,6 @@ const Dashboard = () => {
                 className="flex border justify-between items-center bg-gray-50 p-3 rounded"
               >
                 <span className="font-semibold text-gray-700">
-                  {/* UBAH BARIS INI: Panggil langsung item.nama_barang */}
                   {item.nama_barang}
                 </span>
                 <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Tesseract from "tesseract.js";
 import { useNavigate } from "react-router-dom"; // Tambahkan ini
 
@@ -16,37 +16,6 @@ const ScanStruk = () => {
     }
   };
 
-   const kataTerlarang = [
-      "TOTAL",
-      "SUBTOTAL",
-      "TAX",
-      "CASHIER",
-      "KASIR",
-      "TERIMAKASIH",
-      "TELP",
-      "SURABAYA",
-      "ALAMAT",
-      "JL.",
-      "NO.",
-      "NPWP",
-      "CHECK",
-      "PAJAK",
-      "TUNAI",
-      "BAYAR",
-      "LINK",
-      "KEMBALI",
-      "CASH",
-      "HARGA",
-      "DATE",
-      "ITEMS",
-      "BEFORE",
-      "PBI",
-      'DISKON',
-      "PPN",
-      "NON PPN",
-      "ANDA"
-    ];
-
   // 2. Fungsi Ekstraksi (Mencari Nama & Harga dari teks berantakan)
   const ekstrakData = (teks) => {
     const baris = teks
@@ -54,7 +23,7 @@ const ScanStruk = () => {
       .map((b) => b.trim())
       .filter((b) => b.length > 0);
 
-    // 1. Perluas daftar kata terlarang (Blacklist)
+    // 1. Daftar kata terlarang (Blacklist)
     const kataTerlarang = [
       "TOTAL",
       "SUBTOTAL",
@@ -162,7 +131,7 @@ const ScanStruk = () => {
     }
     return hasilRingkas;
   };
-  // 3. Fungsi untuk memproses gambar menjadi teks (OCR)
+  // 3. Fungsi untuk memproses gambar menjadi teks 
   const prosesScan = async () => {
     if (!gambar) return alert("Pilih gambar dulu!");
 
@@ -172,7 +141,7 @@ const ScanStruk = () => {
         data: { text },
       } = await Tesseract.recognize(
         gambar,
-        "ind", // Menggunakan data bahasa Indonesia
+        "ind", 
         { logger: (m) => console.log(m) }
       );
       setHasilScan(text);

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
@@ -22,7 +21,7 @@ const Sidebar = () => {
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-white border-t border-e border-gray-100 flex justify-around p-2 z-50 sm:relative sm:w-64 sm:h-screen sm:flex-col sm:justify-start sm:border-t-0 sm:border-r sm:p-6">
-      {/* Logo - Hanya muncul di Desktop */}
+      {/* Logo */}
       <div className="hidden sm:block mb-10 text-center">
         <h1 className="text-2xl font-black text-blue-600 tracking-tighter italic">
           {user.nama_warung}
@@ -51,7 +50,7 @@ const Sidebar = () => {
           );
         })}
 
-        {/* Tombol Logout - Hanya muncul di Desktop */}
+        {/* Tombol Logout */}
         <button
           onClick={handleLogout}
           className="hidden sm:flex items-center gap-4 p-3 mt-auto text-red-400 font-bold hover:bg-red-50 rounded-2xl transition-all"

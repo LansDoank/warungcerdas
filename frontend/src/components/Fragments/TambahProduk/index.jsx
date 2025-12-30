@@ -8,8 +8,8 @@ const TambahProduk = () => {
   const dataDariScan = location.state?.scanData;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    nama_barang: dataDariScan?.nama || "", // Jika ada hasil scan, langsung isi
-    harga_beli: dataDariScan?.harga || 0, // Jika ada hasil scan, langsung isi
+    nama_barang: dataDariScan?.nama || "", 
+    harga_beli: dataDariScan?.harga || 0, 
     harga_jual: "",
     stok: "",
     kategori: "",
@@ -72,7 +72,6 @@ const TambahProduk = () => {
             <input
               type="text"
               required
-              // TAMBAHKAN VALUE DI SINI:
               value={formData.nama_barang}
               className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
               placeholder="Misal: Indomie Goreng"
@@ -115,7 +114,6 @@ const TambahProduk = () => {
               type="number"
               required
               min="0"
-              // TAMBAHKAN VALUE DI SINI:
               value={formData.stok}
               className="w-full p-4 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-bold"
               placeholder="0"

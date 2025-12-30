@@ -5,14 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
     // 1. Ambil semua produk milik user yang sedang login
     public function index()
     {
-        // Paksa menggunakan guard sanctum agar token terbaca di web.php
         $user = auth('sanctum')->user();
 
         if (!$user) {
@@ -36,20 +34,14 @@ class ProductController extends Controller
         // Gunakan updateOrCreate
         $product = Product::updateOrCreate(
             [
-                // Kriteria pencarian: 
                 // Cari produk yang user_id DAN nama_barang-nya sama
                 'user_id' => $userId,
                 'nama_barang' => $request->nama_barang,
             ],
             [
-                // Data yang akan diisi/diperbarui:
                 'harga_beli' => $request->harga_beli ?? 0,
                 'harga_jual' => $request->harga_jual,
                 'kategori' => $request->kategori,
-
-                // LOGIKA STOK:
-                // Jika produk baru, stok = input.
-                // Jika produk lama, stok lama + input baru.
                 'stok' => \DB::raw("stok + " . ($request->stok ?? 0)),
             ]
         );
@@ -82,7 +74,7 @@ class ProductController extends Controller
         ]);
     }
 
-    // 4. Hapus Produk (Soft Delete)
+    // 4. Hapus Produk 
     public function destroy($id)
     {
         $product = Product::where('user_id', auth()->id())->findOrFail($id);

@@ -9,7 +9,6 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    // Tambahkan 'user_id' dan kolom lainnya di sini
     protected $fillable = [
         'user_id',
         'invoice_number',
