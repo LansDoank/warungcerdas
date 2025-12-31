@@ -9,7 +9,7 @@ const Sidebar = () => {
   const menuItems = [
     { name: "Dashboard", path: "/dashboard", icon: "" },
     { name: "Kasir", path: "/kasir", icon: "" },
-    { name: "Scan Struk", path: "/scan", icon: "" },
+    { name: "Scan", path: "/scan", icon: "" },
     { name: "Produk", path: "/produk", icon: "" },
     { name: "Riwayat", path: "/riwayat", icon: "" },
   ];
@@ -20,7 +20,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white border-t border-e border-gray-100 flex justify-around p-2 z-50 sm:relative sm:w-64 sm:h-screen sm:flex-col sm:justify-start sm:border-t-0 sm:border-r sm:p-6">
+    <div className="fixed bottom-0 left-0 w-full bg-white  border-t border-e border-gray-200 flex justify-around p-2 z-50 sm:relative sm:w-64 sm:h-screen sm:flex-col sm:justify-start sm:border-t-0 sm:border-r sm:p-6">
       {/* Logo */}
       <div className="hidden sm:block mb-10 text-center">
         <h1 className="text-2xl font-black text-blue-600 tracking-tighter italic">
