@@ -1,15 +1,15 @@
- 🏪 CerdasWarung - Sistem Pengurusan Warung Digital
+ 🏪 WarungCerdas - Sistem Pengurusan Warung Digital
 
-CerdasWarung adalah aplikasi Point of Sales (POS) berasaskan web yang dirancang untuk membantu pemilik warung tradisional menguruskan stok barang, mencatat transaksi, dan memantau keuntungan secara digital dan efisien.
+WarungCerdas adalah aplikasi Point of Sales (POS) berdasarkan web yang dirancang untuk membantu pemilik warung tradisional menguruskan stok barang, mencatat transaksi, dan memantau keuntungan secara digital dan efisien.
 
 ---
 
  🚀 Ciri-Ciri Utama
 - Dashboard Pintar: Ringkasan transaksi dan statistik produk secara real-time.
-- Sistem Kasir: Input transaksi yang pantas dengan pengiraan automatik.
-- Pengurusan Stok: Pantau baki stok dan notifikasi untuk stok yang hampir habis.
-- Autentikasi Selamat: Menggunakan Laravel Sanctum dengan sistem Token Bearer.
-- Antaramuka Moden: Direka menggunakan React.js dan Tailwind CSS yang responsif.
+- Sistem Kasir: Input transaksi yang sesuai dengan penghitungan otomatis.
+- Pengurusan Stok: Pantau stok dan notifikasi untuk stok yang hampir habis.
+- Autentikasi : Menggunakan Laravel Sanctum dengan sistem Token Bearer.
+- Antarmuka Modern: Menggunakan React.js dan Tailwind CSS yang responsif.
 
 ---
 
